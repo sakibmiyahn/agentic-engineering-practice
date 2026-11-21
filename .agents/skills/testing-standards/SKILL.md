@@ -7,15 +7,15 @@ description: Write or update Taskr API endpoint tests using Jest, Supertest, iso
 
 ## File Naming
 
-Place endpoint test files in `tests/` and name them `resource.test.js`, with the resource name in lowercase, for example `tasks.test.js`, `users.test.js`, or `projects.test.js`. Existing inconsistent names are a known problem scheduled for standardization; do not copy them or rename unrelated files as part of writing tests.
+Place endpoint test files in `tests/` and name them `resource.test.js`, with the resource name in lowercase, for example `tasks.test.js`, `users.test.js`, or `projects.test.js`. The eight suites are system, webhooks, users, projects, tasks, comments, tags, and task-tags; Jest discovers only tests/*.test.js.
 
 ## Test Environment and Isolation
 
-Use Jest and Supertest against the Express app and an in-memory SQLite database. Set `process.env.NODE_ENV = 'test'` before importing the app or database so `DB.js` selects `:memory:`. Use the same database connection as the app.
+Use Jest and Supertest against the Express app and an in-memory SQLite database. Set `process.env.NODE_ENV = 'test'` before importing the app or database so `src/db/connection.js` selects `:memory:`. Use the same database connection as the app.
 
-Initialize the schema programmatically with the existing `tests/schema.js` helper. Reset fixtures before each test, deleting dependent rows before parent rows to respect foreign keys. Create all data required by each test within its own setup; tests must not depend on execution order, a pre-seeded database, or data from another test.
+Use `tests/helpers/database.js` to initialize the shared `src/db/schema.js`, reset fixtures, and close the connection. Reset fixtures before each test, deleting dependent rows before parent rows to respect foreign keys. Create all data required by each test within its own setup; tests must not depend on execution order, a pre-seeded database, or data from another test.
 
-Use `request(app)` rather than starting a separate server. Follow the current import paths, updating them to the actual entry point and database module if the refactor has moved those files. Keep external integrations deterministic with Jest mocks where needed; tests must not require live services, credentials, or network access to external systems.
+Use `request(app)` rather than starting a separate server. Import the application from `src/index.js` and the connection from `src/db/connection.js`, normally through the shared test helper. Keep external integrations deterministic with Jest mocks where needed; tests must not require live services, credentials, or network access to external systems.
 
 ## Endpoint Coverage
 
@@ -35,6 +35,10 @@ Avoid descriptions about internal SQL, helper calls, or implementation details.
 
 ## Running and Verification
 
-After normal dependency installation (`npm install`), the complete suite must run with `npm test` alone. No database seeding, manual schema creation, environment configuration, separate server, or external setup should be required. Keep schema initialization, fixtures, and mocks inside the test setup.
+After dependency installation (`npm install --package-lock=false`), the complete suite must run with `npm test` alone. No database seeding, manual schema creation, environment configuration, separate server, or external setup should be required. Keep schema initialization, fixtures, and mocks inside the test setup.
 
-Run `npm test` after changing tests and report the actual result. Distinguish failures introduced by the change from pre-existing failures. Do not weaken assertions or modify expected behavior merely to make an incorrect implementation pass.
+Run the default parallel `npm test` after changing tests and report the actual result. Supertest needs local socket access; use an approved environment that allows loopback binding. Distinguish failures introduced by the change from pre-existing failures. Do not weaken assertions or modify expected behavior merely to make an incorrect implementation pass.
+
+## Compatibility regressions
+
+Preserve validation precedence, parseInt coercion, database constraint messages, partial updates, authentication only on user/project deletion, pagination semantics, completion timestamps, and user persistence after notification failure. Mock notifications before loading the user service. Assert failure persistence rather than merely checking HTTP errors. Do not weaken the contract to reach an error-case quota; simple list/system routes have no two distinct domain validation failures.
