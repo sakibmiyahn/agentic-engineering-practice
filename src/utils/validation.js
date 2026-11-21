@@ -1,6 +1,6 @@
 /**
- * Checks whether an email address matches the basic email format.
- * @param {string} email - The email address to validate.
+ * @description Checks whether an email address matches the basic email format (validateEmail).
+ * @param {string} email - Email address to validate.
  * @returns {boolean} Whether the address matches the email format.
  */
 function validateEmail(email) {
@@ -8,8 +8,8 @@ function validateEmail(email) {
 }
 
 /**
- * Checks whether a value is a string containing non-whitespace characters.
- * @param {*} val - The value to check.
+ * @description Checks whether a value is a string containing non-whitespace characters (isNonEmptyString).
+ * @param {*} val - Value to inspect.
  * @returns {boolean} Whether the value is a non-empty string after trimming.
  */
 function isNonEmptyString(val) {

@@ -11,6 +11,13 @@ const { commentsRouter } = require('./routes/comments');
 const { tagsRouter } = require('./routes/tags');
 const { taskTagsRouter } = require('./routes/task-tags');
 
+/**
+ * @description Dispatches Taskr HTTP requests through JSON parsing, logging, resource routers, and error handling (app).
+ * @param {import('express').Request} req - Incoming HTTP request.
+ * @param {import('express').Response} res - HTTP response to populate.
+ * @param {import('express').NextFunction} next - Callback for continuing dispatch or forwarding an error.
+ * @returns {void} Dispatches the request through the application without returning a value.
+ */
 const app = express();
 
 app.use(express.json());

@@ -1,6 +1,13 @@
 const express = require('express');
 const service = require('../services/tasks');
 
+/**
+ * @description Dispatches task CRUD and filtered listing requests (tasksRouter).
+ * @param {import('express').Request} req - Incoming HTTP request.
+ * @param {import('express').Response} res - HTTP response to populate.
+ * @param {import('express').NextFunction} next - Callback for continuing dispatch or forwarding an error.
+ * @returns {void} Dispatches the request through the router without returning a value.
+ */
 const tasksRouter = express.Router();
 
 tasksRouter.get('/', async (req, res, next) => {

@@ -2,6 +2,13 @@ const tasks = require('../db/queries/tasks');
 const tags = require('../db/queries/tags');
 const queries = require('../db/queries/task-tags');
 
+/**
+ * @description Checks task and tag existence before applying a unique tag association (applyTag).
+ * @param {string|number} idInput - Identifier parsed as an integer.
+ * @param {Object} data - Resource fields supplied by the caller.
+ * @param {string|number} data.tag_id - Tag identifier to apply.
+ * @returns {Promise<{task_id: number, tag_id: number}>} Identifiers of the task and tag that were associated.
+ */
 async function applyTag(idInput, data) {
   const taskId = parseInt(idInput);
   const { tag_id } = data;
@@ -24,6 +31,12 @@ async function applyTag(idInput, data) {
   }
 }
 
+/**
+ * @description Removes a task-tag association or throws when it was absent (removeTag).
+ * @param {string|number} idInput - Identifier parsed as an integer.
+ * @param {string|number} tagIdInput - Identifier parsed as an integer.
+ * @returns {Promise<{deleted: boolean}>} Acknowledgement that the requested row was deleted.
+ */
 async function removeTag(idInput, tagIdInput) {
   const taskId = parseInt(idInput);
   const tagId = parseInt(tagIdInput);

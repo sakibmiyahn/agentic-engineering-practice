@@ -2,6 +2,13 @@ const express = require('express');
 const service = require('../services/users');
 const { authenticate } = require('../middleware/authenticate');
 
+/**
+ * @description Dispatches user CRUD requests with API-key protection for deletion (usersRouter).
+ * @param {import('express').Request} req - Incoming HTTP request.
+ * @param {import('express').Response} res - HTTP response to populate.
+ * @param {import('express').NextFunction} next - Callback for continuing dispatch or forwarding an error.
+ * @returns {void} Dispatches the request through the router without returning a value.
+ */
 const usersRouter = express.Router();
 
 usersRouter.get('/', async (req, res, next) => {

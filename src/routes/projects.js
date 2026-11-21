@@ -2,6 +2,13 @@ const express = require('express');
 const service = require('../services/projects');
 const { authenticate } = require('../middleware/authenticate');
 
+/**
+ * @description Dispatches project CRUD requests with API-key protection for deletion (projectsRouter).
+ * @param {import('express').Request} req - Incoming HTTP request.
+ * @param {import('express').Response} res - HTTP response to populate.
+ * @param {import('express').NextFunction} next - Callback for continuing dispatch or forwarding an error.
+ * @returns {void} Dispatches the request through the router without returning a value.
+ */
 const projectsRouter = express.Router();
 
 projectsRouter.get('/', async (req, res, next) => {

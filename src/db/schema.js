@@ -1,3 +1,8 @@
+/**
+ * @description Creates all resource tables and constraints if they do not already exist (createSchema).
+ * @param {import('better-sqlite3').Database} db - SQLite connection on which to initialize the schema.
+ * @returns {void} No return value.
+ */
 function createSchema(db) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
