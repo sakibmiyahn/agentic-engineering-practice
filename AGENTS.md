@@ -37,5 +37,10 @@ Follow existing CommonJS modules (`require` and `module.exports`), two-space ind
 ## Testing Guidelines
 Use Jest and Supertest against `src/index.js`. Set `NODE_ENV=test` before importing the app or connection to select isolated in-memory SQLite. Use `tests/helpers/database.js` for the shared production schema, fixture reset, and connection cleanup. Reset dependent rows before parent rows. Each suite must be named `tests/resource.test.js`; Jest discovers only that pattern. Keep integrations deterministic with mocks and verify persistence as well as responses. Cover validation failures, missing resources, and forwarded errors where the contract exposes them. Do not invent errors for endpoints without domain validation. Run the default parallel `npm test` before submitting. Supertest needs loopback socket access in restricted environments.
 
+## Verification
+After completing any significant change, run [verify-app](.agents/skills/verify-app/SKILL.md) before committing. It runs the full suite serially with `npm test -- --runInBand`. Do not commit if any tests are failing; fix implementation defects and rerun verification until all tests pass, or report the specific unresolved failures.
+
+The suite uses Supertest and covers all current API endpoints. A passing run confirms the full application's behavior covered by these tests is working correctly. It does not independently verify deployment, live external integrations, or standalone server startup.
+
 ## Commit & Pull Request Guidelines
 History currently contains one descriptive initial commit, so it establishes no recurring convention. The repository's `commit-push-pr` skill specifies Conventional Commits; use messages such as `fix(tasks): validate task status`. Keep commits scoped. PR descriptions should explain the change, relevant issue links, verification performed, and any API or schema implications. Invoke `$commit-push-pr` only when committing staged changes, pushing, and opening a PR are intended.
